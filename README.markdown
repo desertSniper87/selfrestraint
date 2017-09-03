@@ -16,38 +16,11 @@ SelfRestraint is Free Software under the GPL. You are free to share, modify, and
 
 Installation
 ------------
-If you simply want to use the program, just run the included .exe (Windows) or .app (Mac OS X) (Coming Soon!).
+It was not running on my PC.  There are no instruction on the original site. I did not bother running pyinstaller. And appearantly the provied binary is hardcoded. 
 
+If you are running a Linux machine, the necessary dependencies (python, qt) are already in your system.
 
-Building
---------
-If you want to help with the project and build it yourself here's how:
-
-1. Download the dependancies
-	* Python
-    * [PyQt4](http://www.riverbankcomputing.co.uk/software/pyqt/download)
-    * Qt Library (Included in the PyQT4 Installer)
-    * [Pywin32](http://sourceforge.net/projects/pywin32/)
-    * [PyInstaller](http://www.pyinstaller.org) (depending on your system)
-2. For Windows:
-	* In the PyInstaller directory run  `python pyinstaller.py -F -w --icon=<Path_To_Selfrestraint.ico> \path\to\SelfRestraint.py`
-
-3. If you're on OS X:
-
-    * Navigate to SelfRestraint.app/Contents/Resources and open __boot__.py
-    * Add `sys.path = [os.path.join(os.environ['RESOURCEPATH'], 'lib', 'python2.7', 'lib-dynload')] + sys.path` above `sys.frozen = 'macosx_app'`
-
-
-Known Bugs
-----------
-* Mac version requires password, messy workaround
-* Does not work on OS X
-* Quitting means you have to re run the app, and let is finish the countdown
-* Sometimes the timer doesn't end and the block lasts forever (until hosts file is changed)
-
-To Do
------
-* Add compiled .app
-* Integrate better to use Admin privileges on OSX
-* Increase robustness, and make workarounds harder
-* Add site/config file to prevent constant reentering of sites
+Just run
+```python ~/SelfRestraint/SelfRestraint.py```.
+To change the blacklist 
+```vim .config/SelfRestraint/blocklist```
