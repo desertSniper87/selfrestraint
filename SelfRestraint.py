@@ -67,6 +67,7 @@ class MainForm(QDialog):
                 hours = str((loc - loc % 60) / 60) + " hour, "
         elif ((loc - loc % 60) / 60) == 0:
                 hours = ""
+                hours = ""
         else:
                 hours = str((loc - loc % 60) / 60) + " hours, "
 
@@ -82,9 +83,10 @@ class ListEditor(QDialog):
         # Create widgets
         self.tableView = QPlainTextEdit()
 
-        if not os.path.isfile(os.path.join(config_dir, 'blocklist')):
-            self.createBlockFile()
-        self.loadBlockFile()
+
+        # if not os.path.isfile(os.path.join(config_dir, 'blocklist')):
+        #     self.createBlockFile()
+        # self.loadBlockFile()
 
         layout = QVBoxLayout()
         layout.addWidget(self.tableView)
@@ -98,6 +100,7 @@ class ListEditor(QDialog):
         """If a site block file exists, load it"""
         file = open(homedir + "blocklist")
         self.tableView.appendPlainText(file.read())
+        print(file)
         file.close()
 
     def createBlockFile(self):
@@ -122,7 +125,7 @@ class Backend():
     and appending them to the system hosts file"""
     def __init__(self, parent=None):
         if sys.platform.startswith('linux'):
-            initHosts()
+            self.initHosts()
 
         elif sys.platform.startswith('darwin'):
             self.HostsFile = "/etc/hosts"
@@ -177,7 +180,7 @@ class Backend():
 
         if sys.platform.startswith('linux'):
             # attempt to copy the modified hosts file over the top of the system one.
-            os.system('gksudo cp {0} {1}'.format(self.tmpHostsFile, self.realHostsFile))
+            os.system('sudo cp {0} {1}'.format(self.tmpHostsFile, self.realHostsFile))
 
         self.blockTime = form.timeSlider.value() * 60 * 15
         t = Timer(self.blockTime, self.endBlock)
@@ -222,7 +225,7 @@ class Backend():
 
         if sys.platform.startswith('linux'):
             # attempt to copy the modified hosts file over the top of the system one.
-            os.system('gksudo cp {0} {1}'.format(self.tmpHostsFile, self.realHostsFile))
+            os.system('sudo cp {0} {1}'.format(self.tmpHostsFile, self.realHostsFile))
 
         form.show()
         counter.hide()
@@ -275,15 +278,15 @@ class checkDonation():
         file.close()
 
 
-class checkForUpdates():
-    def __init__(self, parent=None):
-        self.VERSION = "0.2"  # The version of this app
-        f = urllib.urlopen("https://raw.github.com/ParkerK/selfrestraint/master/version")
-        if sys.platform.startswith('win'):
-            self.new_version = f.read().split("\n")[0].split(":")[1]
-            self.VERSION = "0.3"
-        else:
-            self.new_version = f.read().split("\n")[1].split(":")[1]
+# class checkForUpdates():
+#     def __init__(self, parent=None):
+#         self.VERSION = "0.2"  # The version of this app
+#         f = urllib.urlopen("https://raw.github.com/ParkerK/selfrestraint/master/version")
+#         if sys.platform.startswith('win'):
+#             self.new_version = f.read().split("\n")[0].split(":")[1]
+#             self.VERSION = "0.3"
+#         else:
+#             self.new_version = f.read().split("\n")[1].split(":")[1]
 
     def check(self):
         if self.new_version != self.VERSION:
@@ -311,7 +314,7 @@ if __name__ == '__main__':
     elif sys.platform.startswith('linux'):
         from xdg.BaseDirectory import *
         homedir = os.path.join(xdg_config_home, "SelfRestraint/")
-        # print homedir
+        print (homedir)
         if not os.path.isdir(homedir):
             os.mkdir(homedir)
 
@@ -335,13 +338,14 @@ if __name__ == '__main__':
             os.mkdir("{0}{1}".format(homedir, "SelfRestraint"))
         homedir = homedir + "\\SelfRestraint\\"
 
-    updater = checkForUpdates()
-    updater.check()
+    # updater = checkForUpdates()
+    # updater.check()
     donate = checkDonation()
     form = MainForm()
     form.show()
 
     list = ListEditor()
+    list.loadBlockFile()
     # Run the main Qt loop
     counter = QLCDNumber()
     counter.setSegmentStyle(QLCDNumber.Filled)
