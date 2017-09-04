@@ -24,3 +24,8 @@ Just run
 ```python ~/SelfRestraint/SelfRestraint.py```.
 To change the blacklist 
 ```vim .config/SelfRestraint/blocklist```
+
+Todo
+----
+The ```inithost()``` function is not called properly. So, changing the Blockhost in the middle of the timer has no effect. 
+
